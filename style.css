@@ -1,0 +1,41 @@
+/* Reset some basic styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set the body and html to use the full height */
+body, html {
+  height: 100%;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* Style the scroll container */
+#scroll-container {
+  height: 200vh; /* Adjust the height to make the scrolling effect noticeable */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #e0eafc, #cfdef3); /* Nice background gradient */
+}
+
+/* Style the video element */
+video {
+  max-width: 100%;
+  height: auto;
+  border: 5px solid #fff; /* Add a white border to the video */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for a nice effect */
+}
+
+/* Add some padding and style for the video container */
+#video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
