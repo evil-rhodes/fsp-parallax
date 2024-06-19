@@ -7,36 +7,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 200;
-      overflow-x: hidden;
-    }
-    #scroll-container {
-      height: 200vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    video {
-      max-width: 100%;
-      height: auto;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="scroll-container">
-    <video id="video" width="740" height="460" muted>
-      <source src="https://evil-rhodes.github.io/fsp-parallax/FSP-App-Family-v001.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
+    <div id="video-container">
+      <video id="video" width="640" height="360" muted>
+        <source src="https://evil-rhodes.github.io/fsp-parallax/FSP-App-Family-v001.webm" type="video/webm">
+        Your browser does not support the video tag.
+      </video>
+    </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const video = document.getElementById('video');
+      const videoContainer = document.getElementById('video-container');
       const scrollContainer = document.getElementById('scroll-container');
 
       // Create a ScrollMagic Controller
@@ -44,21 +30,42 @@
 
       // Create a ScrollMagic Scene
       const scene = new ScrollMagic.Scene({
-        duration: scrollContainer.offsetHeight - window.innerHeight
+        duration: video.duration * 1000 // Duration of the video in milliseconds
       })
         .on('progress', function (event) {
           const progress = event.progress; // 0 to 1
           const videoDuration = video.duration;
           video.currentTime = progress * videoDuration;
         })
+        .on('enter', function () {
+          video.play();
+          videoContainer.style.position = 'fixed';
+          videoContainer.style.top = '50%';
+          videoContainer.style.left = '50%';
+          videoContainer.style.transform = 'translate(-50%, -50%)';
+        })
+        .on('leave', function () {
+          video.pause();
+          videoContainer.style.position = 'relative';
+          videoContainer.style.top = 'auto';
+          videoContainer.style.left = 'auto';
+          videoContainer.style.transform = 'none';
+        })
         .addTo(controller);
-
-      // Pause the video initially
-      video.pause();
 
       // Prevent default scroll behavior of video
       video.addEventListener('timeupdate', function () {
-        video.pause();
+        if (video.currentTime < video.duration) {
+          video.pause();
+        }
+      });
+
+      // Remove fixed positioning when video ends
+      video.addEventListener('ended', function () {
+        videoContainer.style.position = 'relative';
+        videoContainer.style.top = 'auto';
+        videoContainer.style.left = 'auto';
+        videoContainer.style.transform = 'none';
       });
     });
   </script>
